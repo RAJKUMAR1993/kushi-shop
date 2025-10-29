@@ -1,9 +1,13 @@
 import React from "react";
 import { BiUser } from "react-icons/bi";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { Link, Links } from "react-router-dom";
 
 const Navbar = () => {
+  const cart = useSelector((state) => state.cart.cartProducts);
+  console.log(cart.length, ":::9");
+
   return (
     <>
       <nav className="bg-white shadow-md">
@@ -24,6 +28,11 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <Link to="/cart">
               <FaShoppingCart className="text-lg" />
+              {cart.length > 0 && (
+                <span className="absolute  top-11  bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  {cart.length}
+                </span>
+              )}
             </Link>
             <button className="hidden md:block">Login|Register</button>
             <button className="block md: hidden">
@@ -33,7 +42,7 @@ const Navbar = () => {
         </div>
         {/* header */}
         <div className="flex justify-center items-center space-x-6  py-2 font-bold">
-          <Link to="/home" className="hover:underline">
+          <Link to="/" className="hover:underline">
             Home
           </Link>
           <Link to="/shop" className="hover:underline">
