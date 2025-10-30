@@ -17,7 +17,9 @@ const cartSlice = createSlice({
       );
       if (itemIndex) {
         itemIndex.quantity++;
-        itemIndex.totalPrice = +(itemIndex.totalPrice + newItem.price).toFixed(2);
+        itemIndex.totalPrice = +(itemIndex.totalPrice + newItem.price).toFixed(
+          2
+        );
       } else {
         state.cartProducts.push({
           id: newItem.id,
@@ -81,6 +83,12 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, incrementQuantity, decrementQuantity, removeFromCart, clearCart } = cartSlice.actions;
+export const {
+  addToCart,
+  incrementQuantity,
+  decrementQuantity,
+  removeFromCart,
+  clearCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
