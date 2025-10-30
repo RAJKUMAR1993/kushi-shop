@@ -17,7 +17,7 @@ const cartSlice = createSlice({
       );
       if (itemIndex) {
         itemIndex.quantity++;
-        itemIndex.totalQuantity += newItem.price;
+        itemIndex.totalPrice = +(itemIndex.totalPrice + newItem.price).toFixed(2);
       } else {
         state.cartProducts.push({
           id: newItem.id,
@@ -28,12 +28,59 @@ const cartSlice = createSlice({
           images: newItem.images,
         });
       }
-      state.totalPrice += newItem.price;
+      state.totalPrice = +(state.totalPrice + newItem.price).toFixed(2);
       state.totalQuantity++;
+    },
+
+    incrementQuantity: (state, action) => {
+      const id = action.payload;
+      const item = state.cartProducts.find((p) => p.id === id);
+      if (item) {
+        item.quantity++;
+        item.totalPrice = +(item.totalPrice + item.price).toFixed(2);
+        state.totalPrice = +(state.totalPrice + item.price).toFixed(2);
+        state.totalQuantity++;
+      }
+    },
+
+    decrementQuantity: (state, action) => {
+      const id = action.payload;
+      const itemIndex = state.cartProducts.findIndex((p) => p.id === id);
+      if (itemIndex !== -1) {
+        const item = state.cartProducts[itemIndex];
+        if (item.quantity > 1) {
+          item.quantity--;
+          item.totalPrice = +(item.totalPrice - item.price).toFixed(2);
+          state.totalPrice = +(state.totalPrice - item.price).toFixed(2);
+          state.totalQuantity--;
+        } else {
+          // remove item
+          state.cartProducts.splice(itemIndex, 1);
+          state.totalPrice = +(state.totalPrice - item.price).toFixed(2);
+          state.totalQuantity -= 1;
+        }
+      }
+    },
+
+    removeFromCart: (state, action) => {
+      const id = action.payload;
+      const itemIndex = state.cartProducts.findIndex((p) => p.id === id);
+      if (itemIndex !== -1) {
+        const item = state.cartProducts[itemIndex];
+        state.totalPrice = +(state.totalPrice - item.totalPrice).toFixed(2);
+        state.totalQuantity -= item.quantity;
+        state.cartProducts.splice(itemIndex, 1);
+      }
+    },
+
+    clearCart: (state) => {
+      state.cartProducts = [];
+      state.totalPrice = 0;
+      state.totalQuantity = 0;
     },
   },
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, incrementQuantity, decrementQuantity, removeFromCart, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
+import { FaPlus } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
@@ -52,10 +53,13 @@ const ProductCard = ({ product }) => {
         </div>
 
         <button
+          type="button"
           onClick={(e) => handleAddToCart(e, product)}
-          className="  cursor-pointer absolute right-4 bottom-4 bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:bg-red-700"
+          aria-label={`Add ${product?.title} to cart`}
+          title={`Add ${product?.title} to cart`}
+          className="absolute right-4 bottom-4 w-11 h-11 rounded-full flex items-center justify-center bg-linear-to-br from-red-600 to-red-500 text-white shadow-lg hover:from-red-700 hover:to-red-600 transform hover:-translate-y-0.5 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-300"
         >
-          +
+          <FaPlus className="w-4 h-4" />
         </button>
       </div>
     </>
