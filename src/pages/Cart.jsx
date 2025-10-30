@@ -7,10 +7,11 @@ import {
   clearCart,
 } from "../redux/cartSlice";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { cartProducts, totalPrice } = useSelector((state) => state.cart);
 
   const handleIncrement = (id) => {
@@ -27,6 +28,10 @@ const Cart = () => {
 
   const handleClear = () => {
     dispatch(clearCart());
+  };
+
+  const handleCheckout = () => {
+    navigate("/checkout");
   };
 
   const shipping = cartProducts.length > 0 ? 5.0 : 0.0;
@@ -159,7 +164,10 @@ const Cart = () => {
               </span>
             </div>
 
-            <button className="w-full mt-6 bg-red-600 text-white py-2 rounded">
+            <button
+              onClick={handleCheckout}
+              className="w-full mt-6 bg-red-600 text-white py-2 rounded"
+            >
               Checkout
             </button>
           </aside>

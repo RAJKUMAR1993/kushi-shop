@@ -11,7 +11,6 @@ import Shop from "./Shop";
 const Home = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product);
-  console.log(products.products, "::12");
   useEffect(() => {
     dispatch(setProducts(mockData));
   }, []);
