@@ -11,7 +11,7 @@ const FilterData = () => {
     <>
       <div className="container mx-auto px-4 md:px-16 lg:px-24 py-4">
         {filteredProducts.length === 0 ? (
-          <p className="font-bold text-center text-red-600">
+          <p className="font-bold text-center text-green-600">
             No products found.
           </p>
         ) : (
