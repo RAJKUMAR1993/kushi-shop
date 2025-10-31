@@ -60,7 +60,6 @@ const Contact = () => {
                   <FaMapMarkerAlt className="mt-1 text-red-500" />
                   <div>
                     <p>Brace Infotech Pvt LTD,</p>
-                    <p>"QUICKSTART" CoWorking Place,</p>
                     <p>8th Floor, Quickstart, Shalom Sky City,</p>
                     <p>Gachibowli Circle, Telecom Nagar, Gachibowli,</p>
                     <p>Hyderabad, Telangana 500081</p>
