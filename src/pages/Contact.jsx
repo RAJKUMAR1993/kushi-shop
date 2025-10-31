@@ -59,10 +59,7 @@ const Contact = () => {
                 <div className="flex items-start gap-3 text-gray-600">
                   <FaMapMarkerAlt className="mt-1 text-red-500" />
                   <div>
-                    <p>Brace Infotech Pvt LTD,</p>
-                    <p>8th Floor, Quickstart, Shalom Sky City,</p>
-                    <p>Gachibowli Circle, Telecom Nagar, Gachibowli,</p>
-                    <p>Hyderabad, Telangana 500081</p>
+                    <p>Hyderabad</p>
                   </div>
                 </div>
               </div>
