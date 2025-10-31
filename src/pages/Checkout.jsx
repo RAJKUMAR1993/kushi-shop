@@ -1,14 +1,38 @@
 import React, { useState } from "react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearCart } from "../redux/cartSlice";
 
 const Checkout = () => {
   const { cartProducts, totalPrice } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
   const [BillingToggle, setBillingToggle] = useState(true);
   const [ShippingToggle, setShippingToggle] = useState(false);
   const [PaymentToggle, setPaymentToggle] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
+  const shipping = cartProducts.length > 0 ? 5.0 : 0.0;
+  const grandTotal = +(totalPrice + shipping).toFixed(2);
+
+  const formatPrice = (val) => {
+    return `$${Number(val || 0).toFixed(2)}`;
+  };
+
+  const handlePlaceOrder = () => {
+    if (cartProducts.length === 0) {
+      window.alert(
+        "Your cart is empty. Add some products before placing an order."
+      );
+      return;
+    }
+
+    // Basic confirmation – in a real app you'd validate form fields and call an API
+    if (window.confirm(`Place order for ${formatPrice(grandTotal)}?`)) {
+      // Clear cart and show success
+      dispatch(clearCart());
+      window.alert("Order placed successfully. Thank you!");
+    }
+  };
 
   return (
     <>
@@ -199,35 +223,63 @@ const Checkout = () => {
             <div className="space-y-4">
               {/* Product Items */}
 
-              {cartProducts.map((item) => (
-                <div className="flex items-center space-x-4">
-                  <img
-                    src={item.images}
-                    alt={item.name}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-semibold">{item.name}</h3>
-                    <p className="text-gray-600">
-                      ${item.price} x {item.quantity}
-                    </p>
+              {cartProducts.length === 0 && (
+                <p className="text-gray-600">No items in your cart.</p>
+              )}
+
+              {cartProducts.map((item) => {
+                const imageSrc = Array.isArray(item.images)
+                  ? item.images[0]
+                  : item.images || "/src/assets/images/placeholder.png";
+                const title = item.title || item.name || "Product";
+                const lineTotal = +(item.price * item.quantity).toFixed(2);
+
+                return (
+                  <div key={item.id} className="flex items-center space-x-4">
+                    <img
+                      src={imageSrc}
+                      alt={title}
+                      className="w-20 h-20 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-sm">{title}</h3>
+                      <p className="text-gray-600 text-sm">
+                        {formatPrice(item.price)} x {item.quantity}
+                      </p>
+                    </div>
+                    <span className="font-semibold">
+                      {formatPrice(lineTotal)}
+                    </span>
                   </div>
-                  <span className="font-semibold">
-                    ${item.price * item.quantity}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
 
               {/* Total */}
               <div className="border-t pt-4 mt-4">
+                <div className="flex justify-between items-center text-sm text-gray-700 mb-3">
+                  <span>Subtotal</span>
+                  <span>{formatPrice(totalPrice)}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm text-gray-700 mb-3">
+                  <span>Shipping</span>
+                  <span>{formatPrice(shipping)}</span>
+                </div>
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-xl font-bold">Total Price:</span>
                   <span className="text-xl font-bold">
-                    ${totalPrice.toFixed(2)}
+                    {formatPrice(grandTotal)}
                   </span>
                 </div>
 
-                <button className="w-full bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition-colors">
+                <button
+                  onClick={handlePlaceOrder}
+                  disabled={cartProducts.length === 0}
+                  className={`w-full py-3 rounded-md transition-colors ${
+                    cartProducts.length === 0
+                      ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+                      : "bg-red-600 text-white hover:bg-red-700"
+                  }`}
+                >
                   Place Order
                 </button>
               </div>

@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { BiUser } from "react-icons/bi";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { setSearchTerms } from "../redux/productSlice";
 
 const Navbar = () => {
   const cart = useSelector((state) => state.cart.cartProducts);
-  console.log(cart.length, ":::9");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchInput, setSearchInput] = useState();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Dispatch search action
+    dispatch(setSearchTerms(searchInput));
+    // Navigate to shop page
+    navigate("/filterData");
+  };
 
   return (
     <>
@@ -16,11 +27,12 @@ const Navbar = () => {
             <Link to="/">E-Shop</Link>
           </div>
           <div className="relative flex-1 mx-4">
-            <form>
+            <form onSubmit={handleSearch}>
               <input
                 type="text"
                 placeholder="Search products..."
                 className="border rounded-md py-2  w-full"
+                onChange={(e) => setSearchInput(e.target.value)}
               />
               <FaSearch className="absolute top-3 right-3 text-red-500" />
             </form>
