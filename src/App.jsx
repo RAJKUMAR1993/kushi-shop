@@ -8,6 +8,7 @@ import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import FilterData from "./pages/filterData";
+import Contact from "./pages/Contact";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/filterData" element={<FilterData />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer />
       </BrowserRouter>
